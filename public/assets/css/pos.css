@@ -1,0 +1,133 @@
+/* ==========================
+   تصميم كاشير ثابت لشاشة 17"
+   ========================== */
+
+
+
+   
+/* ✅ المساحة العامة */
+.container-fluid.p-3, .container-fluid.p-2 {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.invoice-table-container {
+    flex: 1;
+    min-height: 260px;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+/* لوحة الارقام والازرار الجانبية */
+.keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.keypad-grid button {
+    aspect-ratio: 1 / 1;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+}
+
+@media (max-width: 1024px) {
+    .invoice-table-container {
+        max-height: calc(100vh - 340px);
+    }
+
+    .keypad-grid button {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1600px) {
+    .invoice-table-container {
+        max-height: calc(100vh - 260px);
+    }
+}
+
+.pos-mode button {
+    touch-action: manipulation;
+}
+
+.pos-mode * {
+    user-select: none;
+}
+
+
+/* ✅ خلايا الجدول */
+.table th, .table td {
+    padding: 5px 8px;
+    font-size: 0.95rem;
+}
+
+/* ✅ أزرار الكاشير (الأربعة) */
+.d-flex.flex-column button {
+    font-size: 0.9rem;
+    padding: 10px 8px;
+    white-space: nowrap;
+}
+
+/* ✅ لوحة الأرقام */
+.keypad-grid button {
+    width: 75px;
+    height: 60px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+/* ✅ ضبط الأعمدة اليسار */
+#categoryButtons {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#itemsArea {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* ✅ تحسينات عامة */
+.btn {
+    border-radius: 6px;
+}
+
+.pos-layout .row {
+    margin: 0;
+}
+
+.pos-layout {
+    display: flex;
+    height: 100%;
+    gap: 8px;
+}
+
+
+.body_pos {
+    overflow: hidden;
+}
+
+/* ✅ للشاشات الأكبر من 19 بوصة */
+@media (min-width: 1600px) {
+    .invoice-table-container {
+        height: 520px;
+    }
+    .keypad-grid button {
+        width: 85px;
+        height: 70px;
+        font-size: 1.4rem;
+    }
+}
+
+/* ✅ للشاشات الأصغر (15 بوصة مثلًا) */
+@media (max-width: 1280px) {
+    .invoice-table-container {
+        height: 370px;
+    }
+    .keypad-grid button {
+        width: 70px;
+        height: 55px;
+        font-size: 1rem;
+    }
+}

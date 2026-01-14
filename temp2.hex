@@ -1,0 +1,92 @@
+0000	3c 6d 65 74 61 20 63 68  61 72 73 65 74 3d 22 55   <meta charset="U
+0010	54 46 2d 38 22 3e 0d 0a  3c 6d 65 74 61 20 6e 61   TF-8">..<meta na
+0020	6d 65 3d 22 76 69 65 77  70 6f 72 74 22 20 63 6f   me="viewport" co
+0030	6e 74 65 6e 74 3d 22 77  69 64 74 68 3d 64 65 76   ntent="width=dev
+0040	69 63 65 2d 77 69 64 74  68 2c 20 69 6e 69 74 69   ice-width, initi
+0050	61 6c 2d 73 63 61 6c 65  3d 31 2c 20 73 68 72 69   al-scale=1, shri
+0060	6e 6b 2d 74 6f 2d 66 69  74 3d 6e 6f 22 3e 0d 0a   nk-to-fit=no">..
+0070	3c 6d 65 74 61 20 6e 61  6d 65 3d 22 64 65 73 63   <meta name="desc
+0080	72 69 70 74 69 6f 6e 22  20 63 6f 6e 74 65 6e 74   ription" content
+0090	3d 22 53 6d 61 72 74 20  50 4f 53 20 53 79 73 74   ="Smart POS Syst
+00a0	65 6d 22 3e 0d 0a 3c 6d  65 74 61 20 6e 61 6d 65   em">..<meta name
+00b0	3d 22 61 75 74 68 6f 72  22 20 63 6f 6e 74 65 6e   ="author" conten
+00c0	74 3d 22 54 61 72 65 6b  20 59 6f 75 73 73 65 66   t="Tarek Youssef
+00d0	22 3e 0d 0a 3c 6d 65 74  61 20 6e 61 6d 65 3d 22   ">..<meta name="
+00e0	6b 65 79 77 6f 72 64 73  22 20 63 6f 6e 74 65 6e   keywords" conten
+00f0	74 3d 22 73 6d 61 72 74  20 70 6f 73 2c 20 6c 61   t="smart pos, la
+0100	72 61 76 65 6c 2c 20 70  68 70 22 3e 0d 0a 3c 6d   ravel, php">..<m
+0110	65 74 61 20 6e 61 6d 65  3d 22 63 73 72 66 2d 74   eta name="csrf-t
+0120	6f 6b 65 6e 22 20 63 6f  6e 74 65 6e 74 3d 22 7b   oken" content="{
+0130	7b 20 63 73 72 66 5f 74  6f 6b 65 6e 28 29 20 7d   { csrf_token() }
+0140	7d 22 3e 0d 0a 3c 21 2d  2d 20 54 69 74 6c 65 20   }">..<!-- Title 
+0150	50 61 67 65 20 28 44 79  6e 61 6d 69 63 29 20 2d   Page (Dynamic) -
+0160	2d 3e 0d 0a 3c 74 69 74  6c 65 3e 40 79 69 65 6c   ->..<title>@yiel
+0170	64 28 27 74 69 74 6c 65  27 2c 20 27 53 6d 61 72   d('title', 'Smar
+0180	74 20 50 4f 53 27 29 3c  2f 74 69 74 6c 65 3e 0d   t POS')</title>.
+0190	0a 0d 0a 3c 21 2d 2d 20  46 6f 6e 74 66 61 63 65   ...<!-- Fontface
+01a0	73 20 43 53 53 2d 2d 3e  0d 0a 3c 6c 69 6e 6b 20   s CSS-->..<link 
+01b0	68 72 65 66 3d 22 7b 7b  20 61 73 73 65 74 28 27   href="{{ asset('
+01c0	61 73 73 65 74 73 2f 63  73 73 2f 66 6f 6e 74 2d   assets/css/font-
+01d0	66 61 63 65 2e 63 73 73  27 29 20 7d 7d 22 20 72   face.css') }}" r
+01e0	65 6c 3d 22 73 74 79 6c  65 73 68 65 65 74 22 20   el="stylesheet" 
+01f0	6d 65 64 69 61 3d 22 61  6c 6c 22 3e 0d 0a 3c 6c   media="all">..<l
+0200	69 6e 6b 20 68 72 65 66  3d 22 7b 7b 20 61 73 73   ink href="{{ ass
+0210	65 74 28 27 61 73 73 65  74 73 2f 76 65 6e 64 6f   et('assets/vendo
+0220	72 2f 66 6f 6e 74 61 77  65 73 6f 6d 65 2d 37 2e   r/fontawesome-7.
+0230	30 2e 31 2f 63 73 73 2f  61 6c 6c 2e 6d 69 6e 2e   0.1/css/all.min.
+0240	63 73 73 27 29 20 7d 7d  22 20 72 65 6c 3d 22 73   css') }}" rel="s
+0250	74 79 6c 65 73 68 65 65  74 22 20 6d 65 64 69 61   tylesheet" media
+0260	3d 22 61 6c 6c 22 3e 0d  0a 3c 6c 69 6e 6b 20 68   ="all">..<link h
+0270	72 65 66 3d 22 7b 7b 20  61 73 73 65 74 28 27 61   ref="{{ asset('a
+0280	73 73 65 74 73 2f 76 65  6e 64 6f 72 2f 6d 64 69   ssets/vendor/mdi
+0290	2d 66 6f 6e 74 2f 63 73  73 2f 6d 61 74 65 72 69   -font/css/materi
+02a0	61 6c 2d 64 65 73 69 67  6e 2d 69 63 6f 6e 69 63   al-design-iconic
+02b0	2d 66 6f 6e 74 2e 6d 69  6e 2e 63 73 73 27 29 20   -font.min.css') 
+02c0	7d 7d 22 20 72 65 6c 3d  22 73 74 79 6c 65 73 68   }}" rel="stylesh
+02d0	65 65 74 22 20 6d 65 64  69 61 3d 22 61 6c 6c 22   eet" media="all"
+02e0	3e 0d 0a 3c 6c 69 6e 6b  20 68 72 65 66 3d 22 7b   >..<link href="{
+02f0	7b 20 61 73 73 65 74 28  27 61 73 73 65 74 73 2f   { asset('assets/
+0300	63 73 73 2f 70 6f 73 2e  63 73 73 27 29 20 7d 7d   css/pos.css') }}
+0310	22 20 72 65 6c 3d 22 73  74 79 6c 65 73 68 65 65   " rel="styleshee
+0320	74 22 20 6d 65 64 69 61  3d 22 61 6c 6c 22 3e 0d   t" media="all">.
+0330	0a 3c 21 2d 2d 20 42 6f  6f 74 73 74 72 61 70 20   .<!-- Bootstrap 
+0340	43 53 53 2d 2d 3e 0d 0a  3c 6c 69 6e 6b 20 68 72   CSS-->..<link hr
+0350	65 66 3d 22 7b 7b 20 61  73 73 65 74 28 27 61 73   ef="{{ asset('as
+0360	73 65 74 73 2f 76 65 6e  64 6f 72 2f 62 6f 6f 74   sets/vendor/boot
+0370	73 74 72 61 70 2d 35 2e  33 2e 38 2e 6d 69 6e 2e   strap-5.3.8.min.
+0380	63 73 73 27 29 20 7d 7d  22 20 72 65 6c 3d 22 73   css') }}" rel="s
+0390	74 79 6c 65 73 68 65 65  74 22 20 6d 65 64 69 61   tylesheet" media
+03a0	3d 22 61 6c 6c 22 3e 0d  0a 0d 0a 3c 21 2d 2d 20   ="all">....<!-- 
+03b0	56 65 6e 64 6f 72 20 43  53 53 2d 2d 3e 0d 0a 3c   Vendor CSS-->..<
+03c0	6c 69 6e 6b 20 68 72 65  66 3d 22 7b 7b 20 61 73   link href="{{ as
+03d0	73 65 74 28 27 61 73 73  65 74 73 2f 63 73 73 2f   set('assets/css/
+03e0	61 6f 73 2e 63 73 73 27  29 20 7d 7d 22 20 72 65   aos.css') }}" re
+03f0	6c 3d 22 73 74 79 6c 65  73 68 65 65 74 22 20 6d   l="stylesheet" m
+0400	65 64 69 61 3d 22 61 6c  6c 22 3e 0d 0a 3c 6c 69   edia="all">..<li
+0410	6e 6b 20 68 72 65 66 3d  22 7b 7b 20 61 73 73 65   nk href="{{ asse
+0420	74 28 27 61 73 73 65 74  73 2f 76 65 6e 64 6f 72   t('assets/vendor
+0430	2f 63 73 73 2d 68 61 6d  62 75 72 67 65 72 73 2f   /css-hamburgers/
+0440	68 61 6d 62 75 72 67 65  72 73 2e 6d 69 6e 2e 63   hamburgers.min.c
+0450	73 73 27 29 20 7d 7d 22  20 72 65 6c 3d 22 73 74   ss') }}" rel="st
+0460	79 6c 65 73 68 65 65 74  22 20 6d 65 64 69 61 3d   ylesheet" media=
+0470	22 61 6c 6c 22 3e 0d 0a  3c 6c 69 6e 6b 20 68 72   "all">..<link hr
+0480	65 66 3d 22 7b 7b 20 61  73 73 65 74 28 27 61 73   ef="{{ asset('as
+0490	73 65 74 73 2f 63 73 73  2f 73 77 69 70 65 72 2d   sets/css/swiper-
+04a0	62 75 6e 64 6c 65 2d 31  31 2e 32 2e 31 30 2e 6d   bundle-11.2.10.m
+04b0	69 6e 2e 63 73 73 27 29  20 7d 7d 22 20 72 65 6c   in.css') }}" rel
+04c0	3d 22 73 74 79 6c 65 73  68 65 65 74 22 20 6d 65   ="stylesheet" me
+04d0	64 69 61 3d 22 61 6c 6c  22 3e 0d 0a 3c 6c 69 6e   dia="all">..<lin
+04e0	6b 20 68 72 65 66 3d 22  7b 7b 20 61 73 73 65 74   k href="{{ asset
+04f0	28 27 61 73 73 65 74 73  2f 76 65 6e 64 6f 72 2f   ('assets/vendor/
+0500	70 65 72 66 65 63 74 2d  73 63 72 6f 6c 6c 62 61   perfect-scrollba
+0510	72 2f 70 65 72 66 65 63  74 2d 73 63 72 6f 6c 6c   r/perfect-scroll
+0520	62 61 72 2d 31 2e 35 2e  36 2e 63 73 73 27 29 20   bar-1.5.6.css') 
+0530	7d 7d 22 20 72 65 6c 3d  22 73 74 79 6c 65 73 68   }}" rel="stylesh
+0540	65 65 74 22 20 6d 65 64  69 61 3d 22 61 6c 6c 22   eet" media="all"
+0550	3e 0d 0a 0d 0a 3c 21 2d  2d 20 4d 61 69 6e 20 43   >....<!-- Main C
+0560	53 53 2d 2d 3e 0d 0a 3c  6c 69 6e 6b 20 68 72 65   SS-->..<link hre
+0570	66 3d 22 7b 7b 20 61 73  73 65 74 28 27 61 73 73   f="{{ asset('ass
+0580	65 74 73 2f 63 73 73 2f  74 68 65 6d 65 2e 63 73   ets/css/theme.cs
+0590	73 27 29 20 7d 7d 22 20  72 65 6c 3d 22 73 74 79   s') }}" rel="sty
+05a0	6c 65 73 68 65 65 74 22  20 6d 65 64 69 61 3d 22   lesheet" media="
+05b0	61 6c 6c 22 3e 0d 0a                               all">..

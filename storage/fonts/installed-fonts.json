@@ -1,0 +1,8 @@
+{
+    "dejavu sans": {
+        "bold": "dejavu_sans_bold_1fad3b3b94185f3d698e8f9c446624c6",
+        "bold_italic": "C:\\xampp\\htdocs\\smartpos\\vendor\\dompdf\\dompdf\/lib\/fonts\/DejaVuSans-BoldOblique",
+        "italic": "C:\\xampp\\htdocs\\smartpos\\vendor\\dompdf\\dompdf\/lib\/fonts\/DejaVuSans-Oblique",
+        "normal": "C:\\xampp\\htdocs\\smartpos\\storage\\fonts\/dejavu_sans_normal_637b3a1240038cc4257a8bd6ca00916a"
+    }
+}
