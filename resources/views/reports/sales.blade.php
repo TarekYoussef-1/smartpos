@@ -2,12 +2,25 @@
 
 @section('content')
 <div class="container-fluid">
-     <!-- زر العودة -->
-    <div style="margin-top: 40px;" class="d-flex justify-content-between align-items-center mb-3">
-        <a href="{{ url('/dashboard') }}" class="btn btn-outline-danger">
-            <i class="fas fa-arrow-right"></i> العودة إلى لوحة التحكم
-        </a>
-    </div>
+   <!-- زر العودة -->
+<div style="margin-top: 40px;" class="d-flex justify-content-between align-items-center mb-3">
+    @php
+        $user = session('user');
+        $backUrl = url('/');
+
+        if ($user) {
+            if ($user->role === 'admin') {
+                $backUrl = route('dashboard.index');
+            } elseif ($user->role === 'manager') {
+                $backUrl = route('dashboard.manager');
+            }
+        }
+    @endphp
+
+    <a href="{{ $backUrl }}" class="btn btn-outline-danger">
+        <i class="fas fa-arrow-right"></i> العودة إلى لوحة التحكم
+    </a>
+</div>
 
     <h4 class="mb-4">تقرير مبيعات الأصناف</h4>
 
@@ -20,23 +33,37 @@
             <label>إلى</label>
             <input type="date" name="to" class="form-control" required value="{{ $to }}">
         </div>
-        <div class="col-md-3 align-self-end">
+        <div class="col-md-2 d-flex flex-column gap-2 align-self-end">
             <button class="btn btn-primary w-100">
                 عرض التقرير
             </button>
         </div>
-        
+
         <!-- زر الطباعة يظهر فقط عند وجود بيانات -->
-        @if($report->isNotEmpty())
-        <div class="col-md-3 align-self-end">
-            <a href="{{ route('reports.sales.print', ['from' => $from, 'to' => $to]) }}" 
-               class="btn btn-success w-100" 
-               target="_blank" 
-               title="طباعة التقرير">
-               <i class="fas fa-print"></i> طباعة
-            </a>
-        </div>
-        @endif
+    @if($report->isNotEmpty())
+<div class="col-md-2 d-flex flex-column gap-2 align-self-end">
+
+    <!-- زر الطباعة -->
+    <a href="{{ route('reports.sales.print', ['from' => $from, 'to' => $to]) }}"
+       class="btn btn-outline-primary btn-lg w-100"
+       target="_blank"
+       title="طباعة التقرير">
+        <i class="fas fa-print me-2"></i>
+        طباعة التقرير
+    </a>
+</div>
+<div class="col-md-2 d-flex flex-column gap-2 align-self-end">  
+    <!-- زر تحميل Excel -->
+    <a href="{{ route('sales.export') }}"
+       class="btn btn-success btn-lg w-100"
+       title="تحميل تقرير المبيعات Excel">
+        <i class="fas fa-file-excel me-2"></i>
+        تحميل Excel
+    </a>
+
+</div>
+@endif
+
 
     </form>
 

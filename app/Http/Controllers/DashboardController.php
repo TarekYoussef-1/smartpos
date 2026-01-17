@@ -25,121 +25,231 @@ class DashboardController extends Controller
     // }
 
 
-    public function index(Request $request)
-    {
-        // --- إحصائيات اليوم (لا تتأثر بالفلتر) ---
-        $today = now()->format('Y-m-d');
-        $todayOrdersQuery = Order::whereDate('created_at', $today)->where('status', 'paid');
+  public function index(Request $request)
+{
+    // --- إحصائيات اليوم (لا تتأثر بالفلتر) ---
+    $today = now()->toDateString();
+    $todayOrdersQuery = Order::whereDate('created_at', $today)->where('status', 'paid');
 
-        $todaySales = $todayOrdersQuery->sum('total');
-        $todayOrdersCount = $todayOrdersQuery->count();
-        $averageOrderValue = $todayOrdersCount > 0 ? $todaySales / $todayOrdersCount : 0;
-        $monthStart = now()->startOfMonth();
-        $monthEnd   = now()->endOfMonth();
+    $todaySales = $todayOrdersQuery->sum('total');
+    $todayOrdersCount = $todayOrdersQuery->count();
+    $averageOrderValue = $todayOrdersCount > 0 ? $todaySales / $todayOrdersCount : 0;
 
-        $monthlySales = Order::whereBetween('created_at', [$monthStart, $monthEnd])
-            ->where('status', 'paid')
-            ->sum('total');
-        $dineInCount = Order::whereDate('created_at', $today)->where('type', 'dine_in')->where('status', 'paid')->count();
-        $takeAwayCount = Order::whereDate('created_at', $today)->where('type', 'take_away')->where('status', 'paid')->count();
-        $deliveryCount = Order::whereDate('created_at', $today)->where('type', 'delivery')->where('status', 'paid')->count();
+    $monthStart = now()->startOfMonth();
+    $monthEnd   = now()->endOfMonth();
 
-        // --- البيانات الأساسية (لا تتأثر بالفلتر) ---
-        $departmentsCount = Department::count();
-        $productsCount = Product::count();
-        $usersCount = User::count();
+    $monthlySales = Order::whereBetween('created_at', [$monthStart, $monthEnd])
+        ->where('status', 'paid')
+        ->sum('total');
 
-        // --- بيانات المخططات (لا تتأثر بالفلتر) ---
-        $orderTypeChartData = $this->getOrderTypeChartData();
-        $salesChartData = $this->getSalesChartData(7);
+    $dineInCount = Order::whereDate('created_at', $today)->where('type', 'dine_in')->where('status', 'paid')->count();
+    $takeAwayCount = Order::whereDate('created_at', $today)->where('type', 'take_away')->where('status', 'paid')->count();
+    $deliveryCount = Order::whereDate('created_at', $today)->where('type', 'delivery')->where('status', 'paid')->count();
 
-        // --- بناء استعلام الطلبات مع الفلاتر الجديدة ---
-        $ordersQuery = Order::with('customer')->orderBy('created_at', 'desc');
-        // عدد البرنترات    
-        $printersCount = Printer::count();
+    // --- البيانات الأساسية (لا تتأثر بالفلتر) ---
+    $departmentsCount = Department::count();
+    $productsCount = Product::count();
+    $usersCount = User::count();
+    $printersCount = Printer::count();
 
-        // فلتر برقم الطلب
-        if ($request->filled('order_id')) {
-            $ordersQuery->where('id', $request->order_id);
-        }
+    // --- بيانات المخططات (لا تتأثر بالفلتر) ---
+    $orderTypeChartData = $this->getOrderTypeChartData();
+    $salesChartData = $this->getSalesChartData(7);
 
-        // فلتر بنطاق زمني
-        if ($request->filled('start_date')) {
-            $ordersQuery->whereDate('created_at', '>=', $request->start_date);
-        }
-        if ($request->filled('end_date')) {
-            $ordersQuery->whereDate('created_at', '<=', $request->end_date);
-        }
+    // --- بناء استعلام الطلبات (مع بيانات الكاشير + نوع الشيفت) ---
+    $ordersQuery = DB::table('orders')
+        ->leftJoin('users', 'users.id', '=', 'orders.user_id')
+        ->leftJoin('shifts', 'shifts.id', '=', 'orders.shift_id')
+        ->leftJoin('shift_types', 'shift_types.id', '=', 'shifts.shift_type_id')
+        ->select(
+            'orders.*',
+            'users.name as cashier_name',
+            'shift_types.name as shift_type_name'
+        )
+        ->orderBy('orders.created_at', 'desc');
 
-        // عرض الطلبات باستخدام paginate (10 طلبات في كل صفحة)
-        $orders = $ordersQuery->paginate(10);
-
-        // ✅ التحقق من طلب AJAX
-        if ($request->ajax() || $request->wantsJson()) {
-            // إرجاع استجابة JSON تحتوي على الجدول والتقسيم الصفحي
-            $tableHtml = view('dashboard._orders_table', compact('orders'))->render();
-            $paginationHtml = $orders->appends(request()->query())->links('pagination::bootstrap-5')->toHtml();
-
-            return response()->json([
-                'table' => $tableHtml,
-                'pagination' => $paginationHtml
-            ]);
-        }
-        $currentShift = null;
-        if (Session::has('shift_id')) {
-            $currentShift = DB::table('shifts')->where('id', Session::get('shift_id'))->first();
-        }
-        // =====================
-        // الشيفتات (للمدير فقط)
-        // =====================
-        $shifts = [];
-        $totalShiftsSales = 0;
-
-        if (Session::has('user') && Session::get('user')->role === 'admin') {
-
-            $shifts = DB::table('shifts')
-                ->leftJoin('users', 'users.id', '=', 'shifts.user_id')
-                ->leftJoin('orders', 'orders.shift_id', '=', 'shifts.id')
-                ->select(
-                    'shifts.id',
-                    'shifts.opened_at',
-                    'shifts.closed_at',
-                    'users.name as user_name',
-                    DB::raw('IFNULL(SUM(orders.total), 0) as total_sales')
-                )
-                ->groupBy(
-                    'shifts.id',
-                    'shifts.opened_at',
-                    'shifts.closed_at',
-                    'users.name'
-                )
-                ->orderBy('shifts.opened_at', 'desc')
-                ->get();
-
-            $totalShiftsSales = $shifts->sum('total_sales');
-        }
-
-
-        return view('dashboard.index', compact(
-            'todaySales',
-            'monthlySales',
-            'todayOrdersCount',
-            'averageOrderValue',
-            'dineInCount',
-            'takeAwayCount',
-            'deliveryCount',
-            'orders',
-            'departmentsCount',
-            'productsCount',
-            'usersCount',
-            'orderTypeChartData',
-            'salesChartData',
-            'currentShift',
-            'shifts',
-            'totalShiftsSales',
-            'printersCount'
-        ));
+    // فلتر برقم الطلب
+    if ($request->filled('order_id')) {
+        $ordersQuery->where('orders.id', $request->order_id);
     }
+
+    // فلتر بنطاق زمني
+    if ($request->filled('start_date')) {
+        $ordersQuery->whereDate('orders.created_at', '>=', $request->start_date);
+    }
+    if ($request->filled('end_date')) {
+        $ordersQuery->whereDate('orders.created_at', '<=', $request->end_date);
+    }
+
+    $orders = $ordersQuery->paginate(10);
+
+    // ✅ التحقق من طلب AJAX
+    if ($request->ajax() || $request->wantsJson()) {
+        $tableHtml = view('dashboard._orders_table', compact('orders'))->render();
+        $paginationHtml = $orders->appends(request()->query())->links('pagination::bootstrap-5')->toHtml();
+
+        return response()->json([
+            'table' => $tableHtml,
+            'pagination' => $paginationHtml
+        ]);
+    }
+
+    // --- الشيفت الحالي ---
+    $currentShift = null;
+    if (Session::has('shift_id')) {
+        $currentShift = DB::table('shifts')->where('id', Session::get('shift_id'))->first();
+    }
+
+    // =====================
+    // الشيفتات (للأدمن)
+    // =====================
+    $shifts = DB::table('shifts')
+        ->leftJoin('users', 'users.id', '=', 'shifts.user_id')
+        ->leftJoin('orders', 'orders.shift_id', '=', 'shifts.id')
+        ->select(
+            'shifts.id',
+            'shifts.opened_at',
+            'shifts.closed_at',
+            'users.name as user_name',
+            DB::raw('IFNULL(SUM(orders.total), 0) as total_sales')
+        )
+        ->groupBy(
+            'shifts.id',
+            'shifts.opened_at',
+            'shifts.closed_at',
+            'users.name'
+        )
+        ->orderBy('shifts.opened_at', 'desc')
+        ->get();
+
+    $totalShiftsSales = $shifts->sum('total_sales');
+
+    return view('dashboard.index', compact(
+        'todaySales',
+        'monthlySales',
+        'todayOrdersCount',
+        'averageOrderValue',
+        'dineInCount',
+        'takeAwayCount',
+        'deliveryCount',
+        'orders',
+        'departmentsCount',
+        'productsCount',
+        'usersCount',
+        'orderTypeChartData',
+        'salesChartData',
+        'currentShift',
+        'shifts',
+        'totalShiftsSales',
+        'printersCount'
+    ));
+}
+
+
+public function managerIndex(Request $request)
+{
+    // --- إحصائيات اليوم (لا تتأثر بالفلتر) ---
+    $today = now()->toDateString();
+    $todayOrdersQuery = Order::whereDate('created_at', $today)->where('status', 'paid');
+
+    $todaySales = $todayOrdersQuery->sum('total');
+    $todayOrdersCount = $todayOrdersQuery->count();
+    $averageOrderValue = $todayOrdersCount > 0 ? $todaySales / $todayOrdersCount : 0;
+
+    $monthStart = now()->startOfMonth();
+    $monthEnd   = now()->endOfMonth();
+
+    $monthlySales = Order::whereBetween('created_at', [$monthStart, $monthEnd])
+        ->where('status', 'paid')
+        ->sum('total');
+
+    $dineInCount = Order::whereDate('created_at', $today)->where('type', 'dine_in')->where('status', 'paid')->count();
+    $takeAwayCount = Order::whereDate('created_at', $today)->where('type', 'take_away')->where('status', 'paid')->count();
+    $deliveryCount = Order::whereDate('created_at', $today)->where('type', 'delivery')->where('status', 'paid')->count();
+
+    // --- بيانات المخططات ---
+    $orderTypeChartData = $this->getOrderTypeChartData();
+    $salesChartData = $this->getSalesChartData(7);
+
+    // --- طلبات اليوم فقط (مع اسم الكاشير + نوع الشيفت) ---
+    $ordersQuery = DB::table('orders')
+        ->leftJoin('users', 'users.id', '=', 'orders.user_id')
+        ->leftJoin('shifts', 'shifts.id', '=', 'orders.shift_id')
+        ->leftJoin('shift_types', 'shift_types.id', '=', 'shifts.shift_type_id')
+        ->select(
+            'orders.*',
+            'users.name as cashier_name',
+            'shift_types.name as shift_type_name'
+        )
+        ->whereDate('orders.created_at', $today) // ✅ اليوم فقط
+        ->orderBy('orders.created_at', 'desc');
+
+    // فلتر برقم الطلب داخل اليوم
+    if ($request->filled('order_id')) {
+        $ordersQuery->where('orders.id', $request->order_id);
+    }
+
+    $orders = $ordersQuery->paginate(10);
+
+    // ✅ AJAX
+    if ($request->ajax() || $request->wantsJson()) {
+        $tableHtml = view('dashboard._orders_table', compact('orders'))->render();
+        $paginationHtml = $orders->appends(request()->query())->links('pagination::bootstrap-5')->toHtml();
+
+        return response()->json([
+            'table' => $tableHtml,
+            'pagination' => $paginationHtml
+        ]);
+    }
+
+    // --- الشيفت الحالي ---
+    $currentShift = null;
+    if (Session::has('shift_id')) {
+        $currentShift = DB::table('shifts')->where('id', Session::get('shift_id'))->first();
+    }
+
+    // --- شيفتات اليوم فقط (للمدير) ---
+    $shifts = DB::table('shifts')
+        ->leftJoin('users', 'users.id', '=', 'shifts.user_id')
+        ->leftJoin('orders', 'orders.shift_id', '=', 'shifts.id')
+        ->whereDate('shifts.opened_at', $today) // ✅ اليوم فقط
+        ->select(
+            'shifts.id',
+            'shifts.opened_at',
+            'shifts.closed_at',
+            'users.name as user_name',
+            DB::raw('IFNULL(SUM(orders.total), 0) as total_sales')
+        )
+        ->groupBy(
+            'shifts.id',
+            'shifts.opened_at',
+            'shifts.closed_at',
+            'users.name'
+        )
+        ->orderBy('shifts.opened_at', 'desc')
+        ->get();
+
+    $totalShiftsSales = $shifts->sum('total_sales');
+
+    return view('dashboard.manager', compact(
+        'todaySales',
+        'monthlySales',
+        'todayOrdersCount',
+        'averageOrderValue',
+        'dineInCount',
+        'takeAwayCount',
+        'deliveryCount',
+        'orders',
+        'orderTypeChartData',
+        'salesChartData',
+        'currentShift',
+        'shifts',
+        'totalShiftsSales'
+    ));
+}
+
+
+
 
     public function cancelOrder(Order $order)
     {

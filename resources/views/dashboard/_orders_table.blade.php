@@ -4,7 +4,9 @@
             <tr>
                 <th>رقم الطلب</th>
                 <th>التاريخ</th>
-                <th>النوع</th>
+                <th>نوع الطلب</th>
+                <th> اسم الكاشير </th>
+                <th>الشيفت</th>
                 <th>العميل</th>
                 <th>الإجمالي</th>
                 <th>الحالة</th>
@@ -14,14 +16,21 @@
         <tbody>
             @forelse ($orders as $order)
             <tr>
-                <td>{{ $order->id }}</td>
-                <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                <td>{{ $order->daily_serial }}</td>
+                <td>{{ \Carbon\Carbon::parse($order->created_at)->format('Y-m-d H:i') }}</td>
                 <td>
                     <span class="badge bg-primary">
                         {{ \Illuminate\Support\Str::title(str_replace('_', ' ', $order->type)) }}
                     </span>
                 </td>
+                  <td>{{ $order->cashier_name ?? '—' }}</td>
+                <td>
+                    <span class="badge bg-info">
+                        {{ $order->shift_type_name ?? 'غير محدد' }}
+                    </span>
+                </td>
                 <td>{{ $order->customer_name ?? 'عميل نقدي' }}</td>
+              
                 <td>{{ number_format($order->total, 2) }}</td>
                 <td>
                     @if($order->status === 'paid')
@@ -32,6 +41,7 @@
                     <span class="badge bg-secondary">{{ $order->status }}</span>
                     @endif
                 </td>
+                
                 <td class="text-center">
                     <a href="{{ route('pos.order.print', $order->id) }}"
                         class="btn btn-sm btn-info"
@@ -55,7 +65,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="text-center">لا توجد طلبات مطابقة للبحث</td>
+                <td colspan="7" class="text-center">لا توجد طلبات  </td>
             </tr>
             @endforelse
         </tbody>

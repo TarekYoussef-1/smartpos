@@ -28,7 +28,7 @@ class ArabicReceiptPrinter
             // ===== Header =====
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             $printer->setEmphasis(true);
-            $printer->text($arabic->utf8Glyphs("SMART TECH POS\n"));
+            $printer->text($arabic->utf8Glyphs("DAGAGOO\n"));
             $printer->text($arabic->utf8Glyphs("فاتورة مبيعات\n"));
             $printer->setEmphasis(false);
             $printer->text(str_repeat("-", 32) . "\n");

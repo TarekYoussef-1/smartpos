@@ -10,7 +10,7 @@
 body { width: 80mm;  margin-left: 20px;padding: 5px; font-family: "Tahoma", sans-serif; font-size: 18px; direction: rtl; color: #000;; }
 .center { text-align: center; }
 .bold { font-weight: bold; }
-.title {  font-weight: bold; margin-bottom: 4px; }
+.title {  font-weight: bold; margin-bottom: 4px; font-size: 40px; }
 .sub { font-size: 20px; }
 .divider { border-top: 2px dashed #000; margin: 6px 0; }
 table { width: 100%; border-collapse: collapse; font-size: 18px; }
@@ -27,7 +27,8 @@ th { font-weight: bold; }
 <div id="receipt">
     <!-- هنا نفس محتوى الفاتورة HTML -->
     <div class="center">
-        <div class="title">Smart Tech POS</div>
+        <img src="{{ asset('assets/images/icon/dagago.png') }}" alt="Logo" style="max-width: 150px; height: auto;left: 20px;">
+        <div class="title">DAGAGOO</div>
         <div class="sub">فاتورة مبيعات</div>
         
         {{-- === التعديل الجديد يبدأ من هنا === --}}
@@ -151,6 +152,9 @@ th { font-weight: bold; }
         @endif
     </table>
     <div class="divider"></div>
+    <div class="center">
+    <img  src="{{ asset('assets/images/icon/qr-code-FB.jpeg') }}" alt="QR-code" style="width:150px; height: auto;">
+    </div>
     <div style="font-size: 18px;" class="footer">رضائكم يسرنا، ورأيك يطورنا ...❤<br><span style="font-size: 15px;"> Smart POS • 0111-5959773 </span></div>
 </div>
 </body>

@@ -9,7 +9,7 @@
     box-shadow:0 8px 20px rgba(0,0,0,0.65);
     text-align:center;">
 
-    <div><img width="250px" src="{{ asset('assets/images/icon/DAGAGOO_logo.webp') }}" alt="Dagagoo Logo" /> </div>
+    <div><img width="200px" src="{{ asset('assets/images/icon/DAGAGOO_logo.webp') }}" alt="Dagagoo Logo" /> </div>
     
 
     {{-- هنا مكان عرض رسالة الخطأ --}}

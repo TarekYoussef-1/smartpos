@@ -218,7 +218,7 @@ class POSController extends Controller
     $pdfPrinter  = '"C:/xampp/htdocs/smartpos/PDFtoPrinter.exe"';
     $options     = "--page-width 74mm --page-height 300mm -T 0 -L 0 -R 0";
 
-    // اسم مختلف عشان ما يدهسش على الطباعة الأصلية
+    // إنشاء الفاتورة من جديد
     $pdfReceipt = public_path("printing/RECEIPT_REPRINT.pdf");
 
     // 👈 أهم سطر: isReprint = true

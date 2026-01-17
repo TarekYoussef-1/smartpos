@@ -80,7 +80,7 @@
 
        
      <div class="col-lg-3 col-md-6 mb-3">
-    <a style="width:100%"  href="{{ route('reports.sales') }}" class="text-decoration-none">
+    <a style="width:100%"  href="{{ route('reports.sales.manager') }}" class="text-decoration-none">
         <div class="card text-white bg-info h-100 dashboard-card">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>

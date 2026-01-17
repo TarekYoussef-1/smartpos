@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exports\SalesReportExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ReportController extends Controller
 {
@@ -66,5 +69,14 @@ class ReportController extends Controller
 
         // إرسال البيانات إلى فيو الطباعة
         return view('reports.sales-print', compact('from', 'to', 'report', 'grandTotal'));
+    }
+
+    public function exportSales(Request $request)
+    {
+        $datanow = date('Y-m-d_H-i-s');
+        return Excel::download(
+            new SalesReportExport,
+            'sales_report@'.$datanow.'.xlsx'
+        );
     }
 }
