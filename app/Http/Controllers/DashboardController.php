@@ -259,6 +259,26 @@ public function managerIndex(Request $request)
             $order->save();
 
             // يمكنك إعادة المنتجات للمخزون هنا إذا كان لديك نظام مخزون
+
+            $order->load(['items.product.department', 'customer', 'cashier']);
+
+            $wkhtmltopdf = '"C://Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"';
+            $pdfPrinter  = '"C:/xampp/htdocs/smartpos/PDFtoPrinter.exe"';
+            $options     = "--page-width 74mm --page-height 300mm -T 0 -L 0 -R 0";
+
+            $pdfReceipt = public_path("printing/RECEIPT_CANCELLED.pdf");
+            $htmlReceipt = view('pos.print_receipt', [
+                'order'       => $order,
+                'isCancelled' => true
+            ])->render();
+
+            $tmpReceipt = public_path("printing/tmp_receipt_cancelled.html");
+            file_put_contents($tmpReceipt, $htmlReceipt);
+
+            shell_exec("$wkhtmltopdf $options \"$tmpReceipt\" \"$pdfReceipt\" 2>&1");
+            shell_exec("$pdfPrinter \"$pdfReceipt\" \"XP-80C\" 2>&1");
+
+            unlink($tmpReceipt);
         }
 
         return redirect()->route('dashboard.index')->with('success', 'تم إلغاء الطلب بنجاح.');

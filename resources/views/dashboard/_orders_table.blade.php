@@ -65,7 +65,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="text-center">لا توجد طلبات  </td>
+                <td colspan="9" class="text-center">لا توجد طلبات  </td>
             </tr>
             @endforelse
         </tbody>

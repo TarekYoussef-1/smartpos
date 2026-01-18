@@ -29,9 +29,14 @@ th { font-weight: bold; }
     <div class="center">
         <img src="{{ asset('assets/images/icon/dagago.png') }}" alt="Logo" style="max-width: 150px; height: auto;left: 20px;">
         <div class="title">DAGAGOO</div>
-        <div class="sub">فاتورة مبيعات</div>
+        <!-- <div class="sub">فاتورة مبيعات</div> -->
         
         {{-- === التعديل الجديد يبدأ من هنا === --}}
+        @if(($isCancelled ?? false) || $order->status === 'cancelled')
+            <div style="color: red; font-weight: bold; font-size: 20px; margin-top: 5px; margin-bottom: 5px;">
+                *** ملغي ***
+            </div>
+        @endif
         @if($isReprint ?? false)
             <div style="color: red; font-weight: bold; font-size: 20px; margin-top: 5px; margin-bottom: 5px;">
                 *** إعادة طباعة ***
